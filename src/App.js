@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
+import 'firebase/firestore'
 
 // not necessary to keep it private
 const config = {
@@ -11,6 +12,7 @@ const config = {
   messagingSenderId: '723176328272',
 }
 firebase.initializeApp(config)
+const db = firebase.firestore()
 
 function App() {
   const [channels, setChannels] = useState([
@@ -19,6 +21,14 @@ function App() {
       id: 'genral',
     },
   ])
+
+  // side effect
+  useEffect(() => {
+    db.collection('channels').onSnapshot(snapshot => {
+      console.log('TCL: App -> snapshot', snapshot)
+    })
+  }, []) // empty array make it run only once at mount
+
   return (
     <div className="App">
       <div className="Nav">
