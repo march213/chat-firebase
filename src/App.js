@@ -15,19 +15,22 @@ firebase.initializeApp(config)
 const db = firebase.firestore()
 
 function App() {
-  const [channels, setChannels] = useState([
-    {
-      topic: 'Something hardcoded',
-      id: 'genral',
-    },
-  ])
+  const [channels, setChannels] = useState([])
 
   // side effect
   useEffect(() => {
-    db.collection('channels').onSnapshot(snapshot => {
-      console.log('TCL: App -> snapshot', snapshot)
+    const unsubscribe = db.collection('channels').onSnapshot(snapshot => {
+      const docs = []
+      snapshot.forEach(doc => {
+        docs.push({
+          ...doc.data(),
+          id: doc.id,
+        })
+      })
+      setChannels(docs)
     })
-  }, []) // empty array make it run only once at mount
+    return unsubscribe
+  }, []) // empty array make it run once at mount
 
   return (
     <div className="App">
