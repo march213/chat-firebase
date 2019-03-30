@@ -6,7 +6,7 @@ function App() {
       <div className="Nav">
         <div className="User">
           <div>
-            <div>Ryan Peterson Florence</div>
+            <div>Jane Air</div>
             <div>
               <button className="text-button">log out</button>
             </div>
@@ -42,7 +42,7 @@ function App() {
                 <div className="Avatar" />
                 <div className="Author">
                   <div className="AuthorName">
-                    <span className="UserName">Ryan Florence </span>
+                    <span className="UserName">Jane Air </span>
                     <span className="TimeStamp">3:37 PM</span>
                   </div>
                   <div className="MessageContent">Alright, lets do this.</div>
@@ -63,7 +63,7 @@ function App() {
           <div>
             <div className="Member">
               <div className="MemberStatus offline" />
-              Ryan Florence
+              Jane Air
             </div>
             <div className="Member">
               <div className="MemberStatus online" />
