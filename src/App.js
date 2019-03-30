@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import firebase from 'firebase'
+
+// not necessary to keep it private
+const config = {
+  apiKey: 'AIzaSyD8jJlmKdQD6H5l_Ro5nEJfPD8IAT1AqnA',
+  authDomain: 'chat-app-4b6e4.firebaseapp.com',
+  databaseURL: 'https://chat-app-4b6e4.firebaseio.com',
+  projectId: 'chat-app-4b6e4',
+  storageBucket: 'chat-app-4b6e4.appspot.com',
+  messagingSenderId: '723176328272',
+}
+firebase.initializeApp(config)
 
 function App() {
+  const [channels, setChannels] = useState([
+    {
+      topic: 'Something hardcoded',
+      id: 'genral',
+    },
+  ])
   return (
     <div className="App">
       <div className="Nav">
         <div className="User">
           <div>
-            <div>Jane Air</div>
+            <div>Jane Air @march213</div>
             <div>
               <button className="text-button">log out</button>
             </div>
@@ -16,10 +34,11 @@ function App() {
           </div>
         </div>
         <nav className="ChannelNav">
-          <a href="/channel/awesome"># awesome</a>
-          <a className="active" href="/channel/general">
-            # general
-          </a>
+          {channels.map(channel => (
+            <a className="active" href={`/channel/${channel.id}`} key={channel.id}>
+              # {channel.id}
+            </a>
+          ))}
         </nav>
       </div>
       <div className="Channel">
