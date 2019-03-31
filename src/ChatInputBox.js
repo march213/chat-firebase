@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { db } from './firebase'
 
-const ChatInputBox = () => {
+const ChatInputBox = ({ user }) => {
   const [value, setValue] = useState('')
   return (
     <form
@@ -16,6 +16,8 @@ const ChatInputBox = () => {
           .doc('general')
           .collection('messages')
           .add({
+            // make a refernce to a user
+            user: db.collection('users').doc(user.uid),
             text: value,
             createdAt: new Date(),
           })
