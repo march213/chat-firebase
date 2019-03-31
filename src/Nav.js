@@ -1,5 +1,6 @@
 import React from 'react'
 import useCollection from './useCollection'
+import { firebase } from './firebase'
 
 export default ({ user }) => {
   const channels = useCollection('channels')
@@ -9,7 +10,15 @@ export default ({ user }) => {
         <div>
           <div>{user.displayName}</div>
           <div>
-            <button className="text-button">log out</button>
+            <button
+              className="text-button"
+              type="button"
+              onClick={() => {
+                firebase.auth().signOut()
+              }}
+            >
+              log out
+            </button>
           </div>
         </div>
         <div className="UserImageContainer">
