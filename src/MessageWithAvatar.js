@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { db } from './firebase'
+import React from 'react'
+import format from 'date-fns/format'
+import useDocWithCache from './useDocWithCache'
 
 const MessageWithAvatar = ({ message, showDay }) => {
-  const author = useDoc(message.user.path)
+  const author = useDocWithCache(message.user.path)
   return (
     <div>
       {showDay && (
         <div className="Day">
           <div className="DayLine" />
-          <div className="DayText">12/6/2018</div>
+          <div className="DayText">
+            {new Date(message.createdAt.seconds * 1000).toLocaleDateString()}
+          </div>
           <div className="DayLine" />
         </div>
       )}
@@ -17,42 +20,13 @@ const MessageWithAvatar = ({ message, showDay }) => {
         <div className="Author">
           <div className="AuthorName">
             <span className="UserName">{author && author.displayName} </span>
-            <span className="TimeStamp">3:37 PM</span>
+            <span className="TimeStamp">{format(message.createdAt.seconds * 1000, 'h:mm A')}</span>
           </div>
           <div className="MessageContent">{message.text}</div>
         </div>
       </div>
     </div>
   )
-}
-
-const cache = {}
-const pendingCache = {}
-
-function useDoc(path) {
-  const [doc, setDoc] = useState(cache[path])
-
-  useEffect(() => {
-    if (doc) return
-    let stillMounted = true
-    const pending = pendingCache[path]
-    const promise = pending || (pendingCache[path] = db.doc(path).get())
-    promise.then(doc => {
-      if (stillMounted) {
-        const user = {
-          ...doc.data(),
-          id: doc.id,
-        }
-        setDoc(user)
-        cache[path] = user
-      }
-    })
-    return () => {
-      stillMounted = false
-    }
-  }, [path])
-
-  return doc
 }
 
 export default MessageWithAvatar
