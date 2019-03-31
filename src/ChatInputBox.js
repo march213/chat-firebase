@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { db } from './firebase'
 
-const ChatInputBox = ({ user }) => {
+const ChatInputBox = ({ user, channelId }) => {
   const [value, setValue] = useState('')
   return (
     <form
@@ -13,7 +13,7 @@ const ChatInputBox = ({ user }) => {
         // e.target.reset() - after form submitting
         await db
           .collection('channels') // posible to query like so: channels/general/messages
-          .doc('general')
+          .doc(channelId)
           .collection('messages')
           .add({
             // make a refernce to a user

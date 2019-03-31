@@ -22,7 +22,7 @@ function useCollection(collectionPath, orderBy) {
       })
       setCollections(docs)
     })
-  }, []) // empty array make it run once at mount
+  }, [collectionPath, orderBy]) // empty array make it run once at mount
 
   return collections
 }

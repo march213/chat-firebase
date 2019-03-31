@@ -2,8 +2,8 @@ import React from 'react'
 import useCollection from './useCollection'
 import MessageWithAvatar from './MessageWithAvatar'
 
-const Messages = () => {
-  const messages = useCollection('/channels/general/messages', 'createdAt')
+const Messages = ({ channelId }) => {
+  const messages = useCollection(`/channels/${channelId}/messages`, 'createdAt')
   return (
     <div className="Messages">
       <div className="EndOfMessages">That's every message!</div>

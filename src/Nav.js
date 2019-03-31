@@ -1,6 +1,20 @@
 import React from 'react'
+import { Link } from '@reach/router'
 import useCollection from './useCollection'
 import { firebase } from './firebase'
+
+const NavLink = props => (
+  <Link
+    {...props}
+    getProps={({ isCurrent }) => {
+      // the object returned here is passed to the
+      // anchor element's props
+      return {
+        className: isCurrent ? 'active' : '',
+      }
+    }}
+  />
+)
 
 export default ({ user }) => {
   const channels = useCollection('channels')
@@ -31,9 +45,9 @@ export default ({ user }) => {
       </div>
       <nav className="ChannelNav">
         {channels.map(channel => (
-          <a className="active" href={`/channel/${channel.id}`} key={channel.id}>
+          <NavLink to={`/channel/${channel.id}`} key={channel.id}>
             # {channel.id}
-          </a>
+          </NavLink>
         ))}
       </nav>
     </div>

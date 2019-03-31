@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Router, Redirect } from '@reach/router'
 
 import { firebase, db } from './firebase'
 import Nav from './Nav'
@@ -10,7 +11,10 @@ function App() {
   return user ? (
     <div className="App">
       <Nav user={user} />
-      <Channel user={user} />
+      <Router>
+        <Channel path="channel/:channelId" user={user} />
+        <Redirect from="/" to="channel/general" />
+      </Router>
     </div>
   ) : (
     <Login />
