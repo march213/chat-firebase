@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { db } from './firebase'
+import React from 'react'
+import useCollection from './useCollection'
 
 export default () => {
-  const [channels, setChannels] = useState([])
-
-  // side effect
-  useEffect(() => {
-    const unsubscribe = db.collection('channels').onSnapshot(snapshot => {
-      const docs = []
-      snapshot.forEach(doc => {
-        docs.push({
-          ...doc.data(),
-          id: doc.id,
-        })
-      })
-      setChannels(docs)
-    })
-    return unsubscribe
-  }, []) // empty array make it run once at mount
+  const channels = useCollection('channels', 'topic')
   return (
     <div className="Nav">
       <div className="User">
