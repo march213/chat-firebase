@@ -2,7 +2,7 @@ import React from 'react'
 import useCollection from './useCollection'
 
 export default () => {
-  const channels = useCollection('channels', 'topic')
+  const channels = useCollection('channels')
   return (
     <div className="Nav">
       <div className="User">

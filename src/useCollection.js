@@ -6,19 +6,22 @@ function useCollection(collectionPath, orderBy) {
 
   // side effect
   useEffect(() => {
-    return db
-      .collection(collectionPath)
-      .orderBy(orderBy)
-      .onSnapshot(snapshot => {
-        const docs = []
-        snapshot.forEach(doc => {
-          docs.push({
-            ...doc.data(),
-            id: doc.id,
-          })
+    let collection = db.collection(collectionPath)
+
+    if (orderBy) {
+      collection = collection.orderBy(orderBy)
+    }
+
+    return collection.onSnapshot(snapshot => {
+      const docs = []
+      snapshot.forEach(doc => {
+        docs.push({
+          ...doc.data(),
+          id: doc.id,
         })
-        setCollections(docs)
       })
+      setCollections(docs)
+    })
   }, []) // empty array make it run once at mount
 
   return collections
