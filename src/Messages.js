@@ -3,13 +3,32 @@ import useCollection from './useCollection'
 import MessageWithAvatar from './MessageWithAvatar'
 import { isSameDay } from 'date-fns'
 
+function ChatScroller(props) {
+  const ref = useRef()
+  const shouldScrollRef = useRef(true)
+
+  useEffect(() => {
+    if (shouldScrollRef.current) {
+      const node = ref.current
+      node.scrollTop = node.scrollHeight
+    }
+  })
+
+  const handleScroll = () => {
+    const node = ref.current
+    const { scrollTop, clientHeight, scrollHeight } = node
+    const atBottom = scrollHeight === clientHeight + scrollTop
+    shouldScrollRef.current = atBottom
+  }
+
+  return <div {...props} ref={ref} onScroll={handleScroll} />
+}
+
 const Messages = ({ channelId }) => {
   const messages = useCollection(`/channels/${channelId}/messages`, 'createdAt')
-  const scrollerRef = useRef()
-  useChatScroll(scrollerRef)
 
   return (
-    <div className="Messages" ref={scrollerRef}>
+    <ChatScroller className="Messages">
       <div className="EndOfMessages">That's every message!</div>
 
       {messages.map((message, index) => {
@@ -27,7 +46,7 @@ const Messages = ({ channelId }) => {
           </div>
         )
       })}
-    </div>
+    </ChatScroller>
   )
 }
 
@@ -48,13 +67,6 @@ function shouldShowAvatar(previous, message) {
 
   const hasBeenAwile = message.createdAt.seconds - previous.createdAt.seconds > 180
   return hasBeenAwile
-}
-
-function useChatScroll(ref) {
-  useEffect(() => {
-    const node = ref.current
-    node.scrollTop = node.scrollHeight
-  })
 }
 
 export default Messages
