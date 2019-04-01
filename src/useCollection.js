@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { db } from './firebase'
 
-function useCollection(collectionPath, orderBy) {
+function useCollection(collectionPath, orderBy, where = []) {
   const [collections, setCollections] = useState([])
+
+  const [queryField, queryOperator, queryValue] = where
 
   // side effect
   useEffect(() => {
@@ -10,6 +12,10 @@ function useCollection(collectionPath, orderBy) {
 
     if (orderBy) {
       collection = collection.orderBy(orderBy)
+    }
+
+    if (queryField) {
+      collection = collection.where(queryField, queryOperator, queryValue)
     }
 
     return collection.onSnapshot(snapshot => {
@@ -22,7 +28,7 @@ function useCollection(collectionPath, orderBy) {
       })
       setCollections(docs)
     })
-  }, [collectionPath, orderBy]) // empty array make it run once at mount
+  }, [collectionPath, orderBy, queryField, queryOperator, queryValue]) // empty array make it run once at mount
 
   return collections
 }

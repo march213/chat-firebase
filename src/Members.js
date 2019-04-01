@@ -1,28 +1,20 @@
-import React, { useEffect } from 'react'
-import { db } from './firebase'
+import React from 'react'
+import useColletion from './useCollection'
 
 const Members = ({ channelId }) => {
-  useEffect(() => {
-    return db
-      .collection('users')
-      .where(`channels.${channelId}`, '==', true)
-      .onSnapshot(snapshot => {
-        snapshot.forEach(doc => {
-          console.log(doc.data())
-        })
-      })
-  }, [channelId])
+  const members = useColletion('users', 'displayName', [`channels.${channelId}`, '==', true])
+
   return (
     <div className="Members">
       <div>
-        <div className="Member">
-          <div className="MemberStatus offline" />
-          Jane Air
-        </div>
-        <div className="Member">
-          <div className="MemberStatus online" />
-          cleverbot
-        </div>
+        {members.map(member => {
+          return (
+            <div className="Member" key={member.id}>
+              <div className="MemberStatus online" />
+              {member.displayName}
+            </div>
+          )
+        })}
       </div>
     </div>
   )
