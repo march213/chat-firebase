@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import useCollection from './useCollection'
 import MessageWithAvatar from './MessageWithAvatar'
 import { isSameDay } from 'date-fns'
 
 const Messages = ({ channelId }) => {
   const messages = useCollection(`/channels/${channelId}/messages`, 'createdAt')
+  const scrollerRef = useRef()
+  useChatScroll(scrollerRef)
+
   return (
-    <div className="Messages">
+    <div className="Messages" ref={scrollerRef}>
       <div className="EndOfMessages">That's every message!</div>
 
       {messages.map((message, index) => {
@@ -45,6 +48,13 @@ function shouldShowAvatar(previous, message) {
 
   const hasBeenAwile = message.createdAt.seconds - previous.createdAt.seconds > 180
   return hasBeenAwile
+}
+
+function useChatScroll(ref) {
+  useEffect(() => {
+    const node = ref.current
+    node.scrollTop = node.scrollHeight
+  })
 }
 
 export default Messages
