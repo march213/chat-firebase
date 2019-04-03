@@ -2,12 +2,12 @@ import React from 'react'
 import useColletion from './useCollection'
 
 const Members = ({ channelId }) => {
-  const members = useColletion('users', 'displayName', [`channels.${channelId}`, '==', true])
+  const members = useColletion('users', undefined, [`channels.${channelId}`, '==', true])
 
   return (
     <div className="Members">
       <div>
-        {members.map(member => {
+        {members.sort(sortByName).map(member => {
           return (
             <div className="Member" key={member.id}>
               <div className="MemberStatus online" />
@@ -18,6 +18,10 @@ const Members = ({ channelId }) => {
       </div>
     </div>
   )
+}
+
+function sortByName(a, b) {
+  return a.displayName > b.displayName ? 1 : a.displayName < b.displayName ? -1 : 0
 }
 
 export default Members
