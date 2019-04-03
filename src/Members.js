@@ -10,7 +10,7 @@ const Members = ({ channelId }) => {
         {members.sort(sortByName).map(member => {
           return (
             <div className="Member" key={member.id}>
-              <div className="MemberStatus online" />
+              <div className={`MemberStatus ${member.status ? member.status.state : 'offline'}`} />
               {member.displayName}
             </div>
           )
